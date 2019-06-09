@@ -56,18 +56,18 @@
   <script src="js/login.js"></script>
   <script src="js/main.js"></script>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
 
       <div id="mapid" onload="initCoords()"></div>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
       <div class="row">
-        <div class="col-md-6">
-            <div id="fpapel" class="row">
-          <button id="papeleras" type="button" class="btn btn-primary" onclick="añadirelemento('BR')">
-            papeleras</button>
-          <button id="Mpapeleras" type="button" class="btn btn-success" style="display:none"
-            onclick="elementoCercano()">Papelera mas cercana</button></div>
+        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div id="fpapel" class="row">
+            <button id="papeleras" type="button" class="btn btn-primary" onclick="añadirelemento('BR')">
+              papeleras</button>
+            <button id="Mpapeleras" type="button" class="btn btn-success" style="display:none"
+              onclick="elementoCercano()">Papelera mas cercana</button></div>
           <div id="fparque" class="row">
             <button id="parques" type="button" class="btn btn-primary" onclick="añadirelemento('PK')"> parques</button>
             <button id="Mpaques" type="button" class="btn btn-success" style="display:none"
@@ -76,7 +76,7 @@
           </div>
         </div>
         <div id="nReg" class="row">
-          <div class="col-md-6">
+          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
             <div class="row">
               <h4>Registro de usuarios</h4>
             </div>
@@ -89,10 +89,9 @@
             <div class="row">
               <button onclick="registrar()">Enviar</button>
             </div>
-            <div class="row">
+            <div id="logCss" class="row">
               <h4>Ingreso de usuarios</h4>
             </div>
-
             <div class="row">
 
               <input id="email2" type="email" placeholder="Ingresa email">
@@ -105,13 +104,15 @@
             </div>
           </div>
         </div>
+        <div id="infe">
+
+        </div>
         <div id="sReg" style="display:none" class="row">
           <div id="contenido">
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </body>
 

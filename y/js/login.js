@@ -92,6 +92,14 @@ function verficar(){
     user.sendEmailVerification().then(function() {
       // Email sent.
       console.log('Enviando correo...');
+      agregartxt2();
+      function agregartxt2(){
+        var newt = document.createElement("p");
+        newt.style.cssText='border:8px solid #56aaf3;padding:12px;width:160px;margin:12px 0 12px 0;';                 
+        var t = document.createTextNode("Para logearse porfavor verifique su email en el correo que le acabamos de enviar");       
+        newt.appendChild(t);                                         
+        document.getElementById("infe").appendChild(newt); 
+        }                            
     }).catch(function(error) {
       // An error happened.
       console.log(error);

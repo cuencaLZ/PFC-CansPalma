@@ -35,7 +35,7 @@ function algoritmo(cordenada1p, cordenada2p, elementos) {
             Math.sin(dLon / 2) * Math.sin(dLon / 2);
         let c = 2 * Math.asin(Math.sqrt(a));
         var d = R * c;
-        if (d < 28.65) {
+        if (d < 2.0) {
             calcula = new calculada(element, d);
             elementoMarcar.push(calcula);
         }

@@ -106,7 +106,7 @@ function pintarBas(basuras) {
   basuras.forEach(function (basura) {
     L.marker([basura.coordenada.latitud, basura.coordenada.longitud], {
       icon: greenIcon
-    }).addTo(mapa).bindPopup("DIRECCIÓN: " + basura.coordenada.direccion + ", BARRIO: " + basura.coordenada.nombre)
+    }).addTo(mapa).bindPopup("DIRECCIÓN: " + basura.coordenada.direccion + ", BARRIO: " + basura.coordenada.equipo)
     if (basura.distancia < mer) {
       mer = basura.distancia;
       datosPapCercana = basura;
@@ -123,7 +123,7 @@ function pintarPark(parques) {
   parques.forEach(function (parque) {
     L.marker([parque.coordenada.latitud, parque.coordenada.longitud], {
       icon: parkIcon
-    }).addTo(mapa).bindPopup("DIRECCIÓN: " + parque.coordenada.zona + ", BARRIO: " + parque.coordenada.barrio)
+    }).addTo(mapa).bindPopup("DIRECCIÓN: " + parque.coordenada.barrio + ", BARRIO: " + parque.coordenada.zona)
     if (parque.distancia < mer) {
       mer = parque.distancia;
       datosParqueCercano = parque;
@@ -153,18 +153,19 @@ function elementoCercano() {
   }
   var router = routingControl.getRouter();
 }
-var objetopap = function (latitud, longitud, direccion, barrio) {
+var objetopap = function (latitud, longitud, direccion, barrio, equipo,tipus) {
   this.latitud = latitud;
   this.longitud = longitud;
   this.direccion = direccion;
   this.barrio = barrio;
+  this.equipo = equipo;
+  this.tipus = tipus;
 }
-var objetopark = function (latitud, longitud, direccion, tipo, nombre) {
+var objetopark = function (latitud, longitud, barrio, zona) {
   this.latitud = latitud;
   this.longitud = longitud;
-  this.direccion = direccion;
-  this.tipo = tipo;
-  this.nombre = nombre;
+  this.barrio = barrio;
+  this.zona = zona;
 }
 
 function error(msg) {
@@ -184,7 +185,7 @@ function getPapelerasDatabase() {
         for (var key in element) {
           console.log(' name=' + key + ' value=' + element[key]);
         }
-        var objetoPapelera = new objetopap(element['Latitud'], element['Longitud'], element['Carrer'], element['Tipus'], element['Barri'])
+        var objetoPapelera = new objetopap(element['Latitud'], element['Longitud'], element['Carrer'], element['Tipus'], element['Barri'], element['Equip'], element['Districte'])
         console.log(objetoPapelera);
         databasePapeleras.push(objetoPapelera);
       });
@@ -209,7 +210,7 @@ function getParquesDatabase() {
         for (var key in element) {
           console.log(' name=' + key + ' value=' + element[key]);
         }
-        var objetoParque = new objetopark(element['Latitud'], element['Longitud'], element['Zona'], element['Barri'])
+        var objetoParque = new objetopark(element['Latitud'], element['Longitud'], element['Zona'], element['Barrio'])
         console.log(objetoParque);
         databaseParques.push(objetoParque);
       });

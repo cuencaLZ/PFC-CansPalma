@@ -1,3 +1,13 @@
 #mapid { height: 98vh;width: 100%; }
 #fpapel{margin: 5%;}
 #fparque{margin: 5%;}
+#Mpapeleras{margin-left: 5%;}
+#Mpaques{margin-left:5%;}
+#logCss{margin-top:20%;}
+@media screen and (max-width: 767px){
+    #nReg   {margin-left: 15%;}
+    #sReg   {margin-left: 15%;}
+    #infe   {margin-left: 15%;}
+    #mapid { height: 60vh;width: 100%; }
+    
+}
