@@ -89,7 +89,7 @@ function pintar(basuras) {
   basuras.forEach(function (basura) {
     L.marker([basura.coordenada.latitud, basura.coordenada.longitud], {
       icon: greenIcon
-    }).addTo(mapa); //Aqui faltan cosas cuando tengamos funcionamineto por BD
+    }).addTo(mapa).bindPopup("DIRECCIÓN: " + basura.coordenada.direccion + ", BARRIO: " + basura.coordenada.nombre)
     if (basura.distancia < mer) {
       mer = basura.distancia;
       datosPapCercana = basura;
@@ -98,7 +98,7 @@ function pintar(basuras) {
 
   L.marker([cordenada1p, cordenada2p], {
     icon: Posicion
-  }).addTo(mapa).bindPopup("tu actualmente estas en " + cordenada1 + " " + cordenada2);
+  }).addTo(mapa).bindPopup("tu actualmente estas en " + cordenada1p + " " + cordenada2p);
 
 }
 
@@ -153,6 +153,3 @@ function getPapelerasDatabase() {
     pintar(basuras);
   });
 }
-
-// latitud 1k = 0,000009
-//
