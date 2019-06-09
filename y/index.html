@@ -49,8 +49,9 @@
 </head>
 <body>
   <button id="papeleras" onclick="añadirelemento('BR')"> papeleras</button>
-  <button id="Mpapeleras" onclick="elementoCercano()">Papelera mas cercana</button>
-  <button id="papeleras" onclick="añadirelemento('PK')"> parques</button>
+  <button id="Mpapeleras" style="display:none" onclick="elementoCercano()">Papelera mas cercana</button>
+  <button id="parques" onclick="añadirelemento('PK')"> parques</button>
+  <button id="Mpaques" style="display:none" onclick="elementoCercano()">Parque mas cercano</button>
 <div id="mapid" onload="initCoords()"></div>
 <script src="js/lrm-graphhopper.js"></script>
 <script src="js/main.js"></script>

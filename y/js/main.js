@@ -20,6 +20,7 @@ var Posicion;
 var greenIcon;
 var parkIcon;
 var botonIdent;
+var Npapeleras;
 
 function success(position) {
   coords = position.coords;
@@ -82,7 +83,8 @@ function addbasurasmapa(position) {
     iconSize: [20, 20], // size of the icon
   });
   if (botonIdent == 'BR') {
-    var Npapeleras;
+    document.getElementById('Mpapeleras').style.display = 'inline';
+    document.getElementById('Mpaques').style.display = 'none';
     Datos();
 
     function Datos() {
@@ -90,6 +92,8 @@ function addbasurasmapa(position) {
 
     }
   } else if (botonIdent == 'PK'){
+    document.getElementById('Mpaques').style.display = 'inline';
+    document.getElementById('Mpapeleras').style.display = 'none';
     buscParques();
     function buscParques() {
       getParquesDatabase();
