@@ -77,7 +77,7 @@ function addbasurasmapa(position) {
         "Relieve": capaRelieve,
         "OpenStreetMap": capaOSM
     };
-    var mer =17.6;
+    var mer = 17.6;
 
     var selectorCapas = new L.control.layers(capasBase);
     selectorCapas.addTo(mapa);
@@ -90,20 +90,31 @@ function addbasurasmapa(position) {
 
         iconSize: [20, 20], // size of the icon
     });
-    var basuras = algoritmo(coords.latitude, coords.longitude);
-    basuras.forEach(function (basura) {
-        L.marker([basura.coordenada.latitud, basura.coordenada.longitud], {
-            icon: greenIcon
-        }).addTo(mapa);//Aqui faltan cosas cuando tengamos funcionamineto por BD
-        if (basura.distancia < mer){
-            mer = basura.distancia;
-            datosPapCercana = basura;
-        };
-    });
-   
-    L.marker([cordenada1p, cordenada2p], {
-        icon: Posicion
-    }).addTo(mapa).bindPopup("tu actualmente estas en " + cordenada1 + " " + cordenada2);
+    var Npapeleras;
+    Datos();
+    async function Datos(){
+        var Npapeleras=  await getPapelerasDatabase();
+        var basuras = await algoritmo(coords.Latitud,coords.Longitud, cacas);
+        await pintar(basuras);
+    }
+    function pintar(basuras){
+        basuras.forEach(function (basura) {
+            L.marker([basura.coordenada.latitud, basura.coordenada.longitud], {
+                icon: greenIcon
+            }).addTo(mapa);//Aqui faltan cosas cuando tengamos funcionamineto por BD
+            if (basura.distancia < mer) {
+                mer = basura.distancia;
+                datosPapCercana = basura;
+            };
+        });
+    
+        L.marker([cordenada1p, cordenada2p], {
+            icon: Posicion
+        }).addTo(mapa).bindPopup("tu actualmente estas en " + cordenada1 + " " + cordenada2);
+
+    }
+    
+  
 }
 
 function añadirBasuras() {
@@ -113,17 +124,65 @@ function añadirBasuras() {
 
 
 function papeleraCercana() {
-  Rutacrear= pintarRutaPapelera(datosPapCercana, cordenada1p, cordenada2p);
-  Rutacrear.addTo(mapa);
- var router = routingControl.getRouter();
+    Rutacrear = pintarRutaPapelera(datosPapCercana, cordenada1p, cordenada2p);
+    Rutacrear.addTo(mapa);
+    var router = routingControl.getRouter();
 }
 
+var objetocaca = function(latitud, longitud, direccion, tipo, nombre){
+    this.latitud = latitud;
+    this.longitud = longitud;
+    this. direccion = direccion;
+    this.tipo = tipo;
+    this.nombre = nombre;
+}
 
 
 function error(msg) {
     var status = document.getElementById('status');
     status.innerHTML = "Error [" + error.code + "]: " + error.message;
 }
+
+function getPapelerasDatabase() {
+    var dbRef;
+    function pruebacol(callback) {
+       
+        setTimeout(function () {
+            dbRef = firebase.database().ref().child("papeleras");
+            callback();
+        }, 10000);
+    }
+    var databasePapeleras = [];
+    
+        return pruebacol(function() {
+            dbRef.once("value", snapshot => {
+                console.log(snapshot);
+    
+                let listamenus = snapshot.val();
+                listamenus.forEach(element => {
+                    var para = document.createElement("p");
+                    //console.log(element.val());
+                    console.log(element);
+                    //      var prueba = JSON.parse(element);
+                    //      var nombre = prueba['nombre'];
+                    //      console.log(prueba);
+                    //      console.log(nombre);
+                    for (var key in element) {
+                        console.log(' name=' + key + ' value=' + element[key]);
+                    }
+                    var objetocaca2 = new objetocaca(element['Latitud'], element['Longitud'], element['Carrer'], element['Tipus'], element['Barri'])
+                    console.log(objetocaca2);
+                    databasePapeleras.push(objetocaca2);
+    
+                });
+                console.log(databasePapeleras);
+                return databasePapeleras;
+            });
+    })
+
+
+}
+
 
 
 // latitud 1k = 0,000009

@@ -17,14 +17,16 @@ var calculada = function (coordenada, distancia) {
     this.coordenada = coordenada;
     this.distancia = distancia
 };
-function algoritmo(cordenada1p, cordenada2p) {
 
-    var cordenadas = papeleras;
+function algoritmo(cordenada1p, cordenada2p, elementos) {
+
+    var cordenadas = elementos;
     var papelerasMarcar = [];
-    var cercania;
-    for (var i = 0; i < cordenadas.length; i++) {
-        let lat2 = cordenadas[i].latitud;
-        let lon2 = cordenadas[i].longitud;
+    console.log("CACAAAA");
+    console.log(cordenadas);
+    cordenadas.forEach(element => {
+        let lat2 = element.latitud;
+        let lon2 = element.longitud;
         let R = 6371; // km
         let dLat = (lat2 - cordenada1p) * Math.PI / 180;
         let dLon = (lon2 - cordenada2p) * Math.PI / 180;
@@ -34,13 +36,14 @@ function algoritmo(cordenada1p, cordenada2p) {
         let c = 2 * Math.asin(Math.sqrt(a));
         var d = R * c;
         if (d < 28.65) {
-            calcula = new calculada(cordenadas[i], d);
+            calcula = new calculada(element, d);
             papelerasMarcar.push(calcula);
         }
         console.log(d);
-    }
+    });
 
     return papelerasMarcar;
-}
+};
+        
 
 
