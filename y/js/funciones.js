@@ -9,8 +9,8 @@ function pintarRuta(puntoCercano, cordenada1p, cordenada2p){
                 vehicle: 'foot',
             }
         }),
-        draggableWaypoints: false,
-        addWaypoints: false
+        //draggableWaypoints: false,
+        //addWaypoints: false
     })
 }
 var calculada = function (coordenada, distancia) {

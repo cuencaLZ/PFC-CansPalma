@@ -1,60 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">  
-  
-  <title>Mapa básico con Leaflet</title>  
-  <link rel="stylesheet" href="css/leaflet.css"/>
-  <link rel="stylesheet" href="css/css.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <title>Mapa básico con Leaflet</title>
+  <link rel="stylesheet" href="css/leaflet.css" />
+  <link rel="stylesheet" href="css/css.css" />
   <script src="js/leaflet.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.js"></script>
   <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
   <script src="js/papeleras/datos.js"></script>
   <script src="js/funciones.js"></script>
- <!-- The core Firebase JS SDK is always required and must be listed first -->
- <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
- <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-database.js"></script>
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/6.1.1/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/6.1.1/firebase-auth.js"></script>
-    <script defer src="/__/firebase/6.1.1/firebase-database.js"></script>
-    <script defer src="/__/firebase/6.1.1/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/6.1.1/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-database.js"></script>
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/6.1.1/firebase-app.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="/__/firebase/6.1.1/firebase-auth.js"></script>
+  <script defer src="/__/firebase/6.1.1/firebase-database.js"></script>
+  <script defer src="/__/firebase/6.1.1/firebase-messaging.js"></script>
+  <script defer src="/__/firebase/6.1.1/firebase-storage.js"></script>
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="/__/firebase/init.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
+  <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#config-web-app -->
 
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyBqdSf9y7YxRsHIhWdgbguYHUHkYcNkcpA",
-    authDomain: "canspalma-1557759413807.firebaseapp.com",
-    databaseURL: "https://canspalma-1557759413807.firebaseio.com",
-    projectId: "canspalma-1557759413807",
-    storageBucket: "canspalma-1557759413807.appspot.com",
-    messagingSenderId: "919858806429",
-    appId: "1:919858806429:web:3ba0d26d63bcc49f"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-</script>
-<link rel="stylesheet" href="leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.css" /> 
-  
-</head>
-<body>
-  <button id="papeleras" onclick="añadirelemento('BR')"> papeleras</button>
-  <button id="Mpapeleras" style="display:none" onclick="elementoCercano()">Papelera mas cercana</button>
-  <button id="parques" onclick="añadirelemento('PK')"> parques</button>
-  <button id="Mpaques" style="display:none" onclick="elementoCercano()">Parque mas cercano</button>
-<div id="mapid" onload="initCoords()"></div>
-<script src="js/lrm-graphhopper.js"></script>
-<script src="js/main.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBqdSf9y7YxRsHIhWdgbguYHUHkYcNkcpA",
+      authDomain: "canspalma-1557759413807.firebaseapp.com",
+      databaseURL: "https://canspalma-1557759413807.firebaseio.com",
+      projectId: "canspalma-1557759413807",
+      storageBucket: "canspalma-1557759413807.appspot.com",
+      messagingSenderId: "919858806429",
+      appId: "1:919858806429:web:3ba0d26d63bcc49f"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <link rel="stylesheet" href="leaflet-routing-machine-3.2.12/dist/leaflet-routing-machine.css" />
 
+</head>
+
+<body>
+  <script src="js/lrm-graphhopper.js"></script>
+  <script src="js/login.js"></script>
+  <script src="js/main.js"></script>
+  <div class="row">
+    <div class="col-md-6">
+
+      <div id="mapid" onload="initCoords()"></div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-6">
+          <button id="papeleras" type="button" class="btn btn-primary" onclick="añadirelemento('BR')">
+            papeleras</button>
+          <button id="Mpapeleras" type="button" class="btn btn-success" style="display:none"
+            onclick="elementoCercano()">Papelera mas cercana</button></div>
+        <div class="col-md-6">
+          <button id="parques" type="button" class="btn btn-primary" onclick="añadirelemento('PK')"> parques</button>
+          <button id="Mpaques" type="button" class="btn btn-success" style="display:none"
+            onclick="elementoCercano()">Parque
+            mas cercano</button>
+        </div>
+      </div>
+      <div id="nReg" class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <h4>Registro de usuarios</h4>
+          </div>
+          <div class="row">
+            <input id="email" type="email" placeholder="Ingresa email">
+          </div>
+          <div class="row">
+            <input id="contrasena" type="password" placeholder="Ingresa contraseña">
+          </div>
+          <div class="row">
+            <button onclick="registrar()">Enviar</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <h4>Ingreso de usuarios</h4>
+          </div>
+
+          <div class="row">
+
+            <input id="email2" type="email" placeholder="Ingresa email">
+          </div>
+          <div class="row">
+            <input id="contrasena2" type="password" placeholder="Ingresa contraseña">
+          </div>
+          <div class="row">
+            <button onclick="ingreso()">Acceder</button>
+          </div>
+        </div>
+      </div>
+      <div id="sReg" style="display:none" class="row">
+      <div id="contenido">
+      </div>
+    </div>
+    </div>
+  </div>
+  </div>
+  </div>
 </body>
+
 </html>
