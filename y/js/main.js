@@ -18,6 +18,7 @@ var cordenada1p;
 var cordenada2p;
 var dbRef;
 function success(position) {
+     dbRef=firebase.database().ref().child("papeleras");
     coords = position.coords;
     cordenada1p = position.coords.latitude;
     cordenada2p = position.coords.longitude;
@@ -147,7 +148,6 @@ function error(msg) {
 
 
 function getPapelerasDatabase() {
-    dbRef=firebase.database().ref().child("papeleras");
     var databasePapeleras = [];
     
     dbRef.once("value", snapshot => {
