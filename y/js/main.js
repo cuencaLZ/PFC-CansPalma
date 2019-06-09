@@ -40,14 +40,6 @@ function success(position) {
   };
   var selectorCapas = new L.control.layers(capasBase);
   selectorCapas.addTo(mapa);
-  var greenIcon = L.icon({
-    iconUrl: 'images/icono.png',
-    iconSize: [20, 20], // size of the icon
-  });
-  var parkIcon = L.icon({
-    iconUrl: 'images/dog-park.png',
-    iconSize: [20, 20], // size of the icon
-  });
   Posicion = L.icon({
     iconUrl: 'images/iconoLugar.png',
     iconSize: [20, 20], // size of the icon
@@ -77,15 +69,19 @@ function addbasurasmapa(position) {
 
   var selectorCapas = new L.control.layers(capasBase);
   selectorCapas.addTo(mapa);
+  greenIcon = L.icon({
+    iconUrl: 'images/icono.png',
+    iconSize: [20, 20], // size of the icon
+  });
+  parkIcon = L.icon({
+    iconUrl: 'images/dog-park.png',
+    iconSize: [20, 20], // size of the icon
+  });
   var Posicion = L.icon({
     iconUrl: 'images/iconoLugar.png',
     iconSize: [20, 20], // size of the icon
   });
   if (botonIdent == 'BR') {
-    greenIcon = L.icon({
-      iconUrl: 'images/icono.png',
-      iconSize: [20, 20], // size of the icon
-    });
     var Npapeleras;
     Datos();
 
@@ -118,6 +114,23 @@ function pintarBas(basuras) {
   }).addTo(mapa).bindPopup("tu actualmente estas en " + cordenada1p + " " + cordenada2p);
 
 }
+function pintarPark(parques) {
+  var mer = 17.6;
+  parques.forEach(function (parque) {
+    L.marker([parque.coordenada.latitud, parque.coordenada.longitud], {
+      icon: parkIcon
+    }).addTo(mapa).bindPopup("DIRECCIÓN: " + parque.coordenada.zona + ", BARRIO: " + parque.coordenada.barrio)
+    if (parque.distancia < mer) {
+      mer = parque.distancia;
+      datosParqueCercano = parque;
+    };
+  });
+
+  L.marker([cordenada1p, cordenada2p], {
+    icon: Posicion
+  }).addTo(mapa).bindPopup("tu actualmente estas en " + cordenada1p + " " + cordenada2p);
+
+}
 
 function añadirelemento(codigo) {
   botonIdent = codigo;
@@ -126,12 +139,23 @@ function añadirelemento(codigo) {
 };
 
 
-function papeleraCercana() {
-  Rutacrear = pintarBasRutaPapelera(datosPapCercana, cordenada1p, cordenada2p);
+function elementoCercano() {
+  if (botonIdent == 'BR'){
+  Rutacrear = pintarRuta(datosPapCercana, cordenada1p, cordenada2p);
   Rutacrear.addTo(mapa);
+  } else if(botonIdent == 'PK'){
+  Rutacrear = pintarRuta(datosParqueCercano, cordenada1p, cordenada2p);
+  Rutacrear.addTo(mapa);
+  }
   var router = routingControl.getRouter();
 }
-var objetocaca = function (latitud, longitud, direccion, tipo, nombre) {
+var objetopap = function (latitud, longitud, direccion, barrio) {
+  this.latitud = latitud;
+  this.longitud = longitud;
+  this.direccion = direccion;
+  this.barrio = barrio;
+}
+var objetopark = function (latitud, longitud, direccion, tipo, nombre) {
   this.latitud = latitud;
   this.longitud = longitud;
   this.direccion = direccion;
@@ -156,7 +180,7 @@ function getPapelerasDatabase() {
         for (var key in element) {
           console.log(' name=' + key + ' value=' + element[key]);
         }
-        var objetoPapelera = new objetocaca(element['Latitud'], element['Longitud'], element['Carrer'], element['Tipus'], element['Barri'])
+        var objetoPapelera = new objetopap(element['Latitud'], element['Longitud'], element['Carrer'], element['Tipus'], element['Barri'])
         console.log(objetoPapelera);
         databasePapeleras.push(objetoPapelera);
       });
@@ -168,9 +192,9 @@ function getPapelerasDatabase() {
       pintarBas(basuras);
     });
 }
-function getPapelerasDatabase() {
+function getParquesDatabase() {
   var databaseParques = [];
-  dbRef = firebase.database().ref().child("papeleras")
+  dbRef = firebase.database().ref().child("parques")
     .once("value").then(snapshot => {
       console.log(snapshot);
       let listamenus = snapshot.val();
@@ -181,7 +205,7 @@ function getPapelerasDatabase() {
         for (var key in element) {
           console.log(' name=' + key + ' value=' + element[key]);
         }
-        var objetoParque = new objetocaca(element['Latitud'], element['Longitud'], element['Zona'], element['Barri'])
+        var objetoParque = new objetopark(element['Latitud'], element['Longitud'], element['Zona'], element['Barri'])
         console.log(objetoParque);
         databaseParques.push(objetoParque);
       });
@@ -190,6 +214,6 @@ function getPapelerasDatabase() {
     }).then((Nparques) => {
       console.log(Nparques)
       var parques = algoritmo(cordenada1p, cordenada2p, Nparques);
-      pintarPar(parques);
+      pintarPark(parques);
     });
 }

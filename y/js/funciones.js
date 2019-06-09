@@ -1,4 +1,4 @@
-function pintarRutaPapelera(puntoCercano, cordenada1p, cordenada2p){
+function pintarRuta(puntoCercano, cordenada1p, cordenada2p){
     return L.Routing.control({
         waypoints: [
             L.latLng(cordenada1p, cordenada2p),
@@ -21,7 +21,7 @@ var calculada = function (coordenada, distancia) {
 function algoritmo(cordenada1p, cordenada2p, elementos) {
 
     var cordenadas = elementos;
-    var papelerasMarcar = [];
+    var elementoMarcar = [];
     console.log("CACAAAA");
     console.log(cordenadas);
     cordenadas.forEach(element => {
@@ -37,12 +37,12 @@ function algoritmo(cordenada1p, cordenada2p, elementos) {
         var d = R * c;
         if (d < 28.65) {
             calcula = new calculada(element, d);
-            papelerasMarcar.push(calcula);
+            elementoMarcar.push(calcula);
         }
         console.log(d);
     });
 
-    return papelerasMarcar;
+    return elementoMarcar;
 };
         
 
