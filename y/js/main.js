@@ -18,6 +18,9 @@ var cordenada2p;
 var dbRef;
 var Posicion;
 var greenIcon;
+var parkIcon;
+var botonIdent;
+
 function success(position) {
   coords = position.coords;
   cordenada1p = position.coords.latitude;
@@ -41,7 +44,11 @@ function success(position) {
     iconUrl: 'images/icono.png',
     iconSize: [20, 20], // size of the icon
   });
-   Posicion = L.icon({
+  var parkIcon = L.icon({
+    iconUrl: 'images/dog-park.png',
+    iconSize: [20, 20], // size of the icon
+  });
+  Posicion = L.icon({
     iconUrl: 'images/iconoLugar.png',
     iconSize: [20, 20], // size of the icon
   });
@@ -49,10 +56,11 @@ function success(position) {
     icon: Posicion
   }).addTo(mapa).bindPopup("tu actualmente estas en " + cordenada1 + " " + cordenada2);
 }
+
 function addbasurasmapa(position) {
   coords = position.coords;
-   cordenada1p = position.coords.latitude;
-   cordenada2p = position.coords.longitude;
+  cordenada1p = position.coords.latitude;
+  cordenada2p = position.coords.longitude;
   console.log(cordenada1p + " " + cordenada2p);
   mapa = new L.map('mapid', {
     center: [cordenada1p, cordenada2p],
@@ -66,26 +74,35 @@ function addbasurasmapa(position) {
     "Relieve": capaRelieve,
     "OpenStreetMap": capaOSM
   };
-  
+
   var selectorCapas = new L.control.layers(capasBase);
   selectorCapas.addTo(mapa);
   var Posicion = L.icon({
     iconUrl: 'images/iconoLugar.png',
     iconSize: [20, 20], // size of the icon
   });
-  greenIcon = L.icon({
-    iconUrl: 'images/icono.png',
-    iconSize: [20, 20], // size of the icon
-  });
-  var Npapeleras;
-  Datos();
-  function Datos() {
-    getPapelerasDatabase();
-    
+  if (botonIdent == 'BR') {
+    greenIcon = L.icon({
+      iconUrl: 'images/icono.png',
+      iconSize: [20, 20], // size of the icon
+    });
+    var Npapeleras;
+    Datos();
+
+    function Datos() {
+      getPapelerasDatabase();
+
+    }
+  } else if (botonIdent == 'PK'){
+    buscParques();
+    function buscParques() {
+      getParquesDatabase();
+    }
   }
 }
-function pintar(basuras) {
-    var mer = 17.6;
+
+function pintarBas(basuras) {
+  var mer = 17.6;
   basuras.forEach(function (basura) {
     L.marker([basura.coordenada.latitud, basura.coordenada.longitud], {
       icon: greenIcon
@@ -102,14 +119,15 @@ function pintar(basuras) {
 
 }
 
-function añadirBasuras() {
+function añadirelemento(codigo) {
+  botonIdent = codigo;
   mapa.remove();
   navigator.geolocation.getCurrentPosition(addbasurasmapa)
 };
 
 
 function papeleraCercana() {
-  Rutacrear = pintarRutaPapelera(datosPapCercana, cordenada1p, cordenada2p);
+  Rutacrear = pintarBasRutaPapelera(datosPapCercana, cordenada1p, cordenada2p);
   Rutacrear.addTo(mapa);
   var router = routingControl.getRouter();
 }
@@ -120,36 +138,58 @@ var objetocaca = function (latitud, longitud, direccion, tipo, nombre) {
   this.tipo = tipo;
   this.nombre = nombre;
 }
+
 function error(msg) {
   var status = document.getElementById('status');
   status.innerHTML = "Error [" + error.code + "]: " + error.message;
 }
+
 function getPapelerasDatabase() {
   var databasePapeleras = [];
   dbRef = firebase.database().ref().child("papeleras")
-  .once("value").then(snapshot => {
-    console.log(snapshot);
-    let listamenus = snapshot.val();
-    listamenus.forEach(element => {
-      var para = document.createElement("p");
-      //console.log(element.val());
-      console.log(element);
-      //   var prueba = JSON.parse(element);
-      //   var nombre = prueba['nombre'];
-      //   console.log(prueba);
-      //   console.log(nombre);
-      for (var key in element) {
-        console.log(' name=' + key + ' value=' + element[key]);
-      }
-      var objetocaca2 = new objetocaca(element['Latitud'], element['Longitud'], element['Carrer'], element['Tipus'], element['Barri'])
-      console.log(objetocaca2);
-      databasePapeleras.push(objetocaca2);
+    .once("value").then(snapshot => {
+      console.log(snapshot);
+      let listamenus = snapshot.val();
+      listamenus.forEach(element => {
+        var para = document.createElement("p");
+        console.log(element);
+        for (var key in element) {
+          console.log(' name=' + key + ' value=' + element[key]);
+        }
+        var objetoPapelera = new objetocaca(element['Latitud'], element['Longitud'], element['Carrer'], element['Tipus'], element['Barri'])
+        console.log(objetoPapelera);
+        databasePapeleras.push(objetoPapelera);
+      });
+      console.log(databasePapeleras);
+      return databasePapeleras;
+    }).then((Npapeleras) => {
+      console.log(Npapeleras)
+      var basuras = algoritmo(cordenada1p, cordenada2p, Npapeleras);
+      pintarBas(basuras);
     });
-    console.log(databasePapeleras);
-    return databasePapeleras;
-  }).then( (Npapeleras) => {
-    console.log(Npapeleras)
-    var basuras = algoritmo(cordenada1p, cordenada2p, Npapeleras);
-    pintar(basuras);
-  });
+}
+function getPapelerasDatabase() {
+  var databaseParques = [];
+  dbRef = firebase.database().ref().child("papeleras")
+    .once("value").then(snapshot => {
+      console.log(snapshot);
+      let listamenus = snapshot.val();
+      listamenus.forEach(element => {
+        var para = document.createElement("p");
+        console.log(element);
+
+        for (var key in element) {
+          console.log(' name=' + key + ' value=' + element[key]);
+        }
+        var objetoParque = new objetocaca(element['Latitud'], element['Longitud'], element['Zona'], element['Barri'])
+        console.log(objetoParque);
+        databaseParques.push(objetoParque);
+      });
+      console.log(databaseParques);
+      return databaseParques;
+    }).then((Nparques) => {
+      console.log(Nparques)
+      var parques = algoritmo(cordenada1p, cordenada2p, Nparques);
+      pintarPar(parques);
+    });
 }
