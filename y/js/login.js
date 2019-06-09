@@ -70,7 +70,7 @@ function aparece(user){
     document.getElementById('sReg').style.display='inline';
     if(user.emailVerified){
         contenido.innerHTML = `
-        <p>Bienvenido!</p>
+        <p>Bienvenido y gracias por ser miembro de la pagina</p>
         <button onclick="cerrar()">Cerrar sesión</button> 
         <button  type="button" class="btn btn-info"> Añadir nuevos elementos</button> 
         `;
